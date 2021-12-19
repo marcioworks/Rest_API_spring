@@ -1,0 +1,18 @@
+language: bash	
+services: docker
+before_install:
+  - cd ~/Documents/my_workspace
+  - echo "we are in the docker folder!"
+script:
+  - docker-compose build
+before_deploy:
+  - echo "${DOCKER_PASSWORD}" | docker login -username "${DOCKER_USERNAME}" --password-stdin
+deploy:
+  provider:script
+  script:
+    docker push marcioss/mysql-calculator;
+    docker push marcioss/calculator;
+  on:
+    branch: master
+notification:
+  email: false
